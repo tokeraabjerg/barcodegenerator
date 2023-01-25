@@ -1,0 +1,173 @@
+<html>
+    <head>
+        <title>Stregkode Generator</title>
+        <link rel="icon" href="favicon.png" type="image/gif">
+        <meta charset="UTF-8">
+
+        <script type="text/javascript" src="dependencies/JsBarcode.all.min.js"></script>
+        <link href="dependencies/fontAwesome.css" rel="stylesheet">
+        <!-- <script type="text/javascript" src="dependencies/html2pdf.bundle.min.js"></script> -->
+        <script src="msg.js"></script>
+        <link rel="stylesheet" href="style.css"></link>
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+        <style id="cStyle">
+            .barcode_subtitle
+            {
+                margin:auto;
+                text-align:center;
+                font-size:40px;
+                font-weight:bold;
+                color:black;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="input">
+            <h1><i class="fas fa-barcode"></i>    Stregkode Generator</h1>
+            <span id="barcode_count_total">0 stregkoder genereret</span><br>
+            <label for="barcode_content">Stregkode indhold:  </label><input id="barcode_content" value="1234"> <span id="complex">  Kompleks <i class="fas fa-chevron-down"></i> </span>
+                <div class="barcodeContainer hidden">
+                    <span>Generer flere stregkoder på samme tid. (f.eks. 51-01-1, 51-01-2 ... --> 51-12-5)</span>
+                    <br>
+                    <label for="complex_nDigits">Antal numre:  </label><input id="complex_nDigits" value="3">
+                    <div id="digits">
+                        <label for="f_digit_0">Fra:  </label><input id="f_digit_0" class="digit" value="50"> <label for="t_digit_0">   <i class="fa-solid fa-arrow-right-long"></i>  </label><input id="t_digit_0" class="digit" value="50"> <i class="fa-solid fa-minus"></i> <button class="buttonVerySmall buttonText" id="buttonText_0" title="Tilføj tekst til tal X (f.eks. pallehøjde)"><i id="buttonText_0" class="fa-solid fa-comment-dots"></i></button>  <i id="trash_digit_0" class="fa-solid fa-trash-arrow-up trash_digit" title="Slet tekst til tal"></i>
+                        <br>
+                        <div class="subsection">
+                            <label for="barcode_include0_0">  Tilføj 0 (1 --> 01):  </label><input type="checkbox" checked id="barcode_include0_0" class="include0"> 
+                        </div>
+                        <br>
+                        <label for="f_digit_1">Fra:  </label><input id="f_digit_1" class="digit" value="01"> <label for="t_digit_1">   <i class="fa-solid fa-arrow-right-long"></i>  </label><input id="t_digit_1" class="digit" value="12"> <i class="fa-solid fa-minus"></i> <button class="buttonVerySmall buttonText" id="buttonText_1" title="Tilføj tekst til tal X (f.eks. pallehøjde)"><i id="buttonText_1" class="fa-solid fa-comment-dots"></i></button>  <i id="trash_digit_1" class="fa-solid fa-trash-arrow-up trash_digit" title="Slet tekst til tal"></i>
+
+                        <br>
+                        <div class="subsection">
+                            <label for="barcode_include0_1">  Tilføj 0 (1 --> 01):  </label><input type="checkbox" checked id="barcode_include0_1" class="include0">
+                        </div>
+
+                        <br>
+                        <label for="f_digit_2">Fra:  </label><input id="f_digit_2" class="digit" value="1"> <label for="t_digit_2">   <i class="fa-solid fa-arrow-right-long"></i>  </label><input id="t_digit_2" class="digit" value="5"> <i class="fa-solid fa-minus"></i> <button class="buttonVerySmall buttonText" id="buttonText_2" title="Tilføj tekst til tal X (f.eks. pallehøjde)"><i id="buttonText_2" class="fa-solid fa-comment-dots"></i></button>  <i  id="trash_digit_2" class="fa-solid fa-trash-arrow-up trash_digit" title="Slet tekst til tal"></i>
+                        <br>
+                        <div class="subsection">
+                            <label for="barcode_include0_2">  Tilføj 0 (1 --> 01):  </label><input type="checkbox" id="barcode_include0_2" class="include0">
+                        </div>
+
+                        <br>
+                        <input type="checkbox" id="barcode_dash" class="extraSettings" checked><label for="barcode_dash">  Lav bindestreg "-" imellem tallene  </label>
+                    </div>
+                </div>
+        
+            <br>
+            <label for="presetSize">Størrelse:  </label>
+            <select name="Luftplacering" id="presetSize">
+                <option value="Luftplacering">Luft placering</option>
+                <option value="Plukplacering">Pluk placering</option>
+                <option value="Varestregkode">Vare stregkode</option>
+                <option value="Mindre">Mindre stregkode</option>
+            </select>
+            <i class="fa-solid fa-cloud-arrow-up cursorPointer" id="sync_size" title="Gem værdier til stregkode størrelser"></i>
+            <br>
+            <label for="barcode_height">Højde:  </label><input id="barcode_height" value="400">
+            <br>
+            <label for="barcode_width">Bredde:  </label><input id="barcode_width" value="10">
+            <br>
+            <label for="barcode_fontSize">Tekst størrelse:  </label><input id="barcode_fontSize" value="400">
+            <br>
+            <div class="checkbox abc-checkbox-primary"> <input type="checkbox" checked id="barcode_showText"> <label for="barcode_showText">Vis tekst</label></div>
+            <div class="checkbox abc-checkbox-primary"> <input type="checkbox" checked id="customText"> <label for="customText">Tilføj fri variabel tekst</label></div>
+            <div class="checkbox abc-checkbox-primary"> <input type="checkbox" id="addToPage"> <label for="addToPage">Tilføj til eksisterende side</label></div>
+            <br>
+            <button id="submit">Opdater  <i class="fa-solid fa-arrows-rotate"></i></button> <button id="savePDF" class="green_button">Åbn som PDF  <i class="fa-solid fa-up-right-from-square"></i></button>
+        </div>
+
+        <div id="styleSettings">
+            <h2 id="layoutButton">Layout <i class="fas fa-chevron-down"></i> </span></h2>
+            <div id="styleSettings_container" class="">
+                <table>
+                    <tr>
+                        <td><label for="padding-bottom">Mellemrum under stregkoder: </label></td>
+                        <td><input id="padding-bottom" class="paddingSetting pxSetting" value="6px"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="padding-top">Mellemrum over stregkoder: </label></td>
+                        <td><input id="padding-top" class="paddingSetting pxSetting" value="6px"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="padding-left">Mellemrum venstre for stregkoder: </label></td>
+                        <td><input id="padding-left" class="paddingSetting pxSetting" value="6px"></td>
+                    </tr>    
+                    <tr>
+                        <td><label for="padding-right">Mellemrum højre for stregkoder: </label></td>
+                        <td><input id="padding-right" class="paddingSetting pxSetting" value="6px"></td>
+                    </tr>   
+                    <tr>
+                        <td><label for="extraTextSize">Fri variabel tekst størrelse: </label></td>
+                        <td><input id="extraTextSize" class="pxSetting" value="40px"></td>
+                    </tr>  
+                    <tr>
+                        <td><label for="styleCenterBarcodes">Centrer stregkoder vertikalt</label></td>
+                        <td><input type="checkbox" checked class="checkbox" id="styleCenterBarcodes"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="barcodeRow">Indsæt stregkoder på række</label></td>
+                        <td><input type="checkbox" checked class="checkbox" id="barcodeRow"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="barcodePerPage">Indsæt flere stregkoder per side</label></td>
+                        <td><input type="checkbox" checked class="checkbox" id="barcodePerPage"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="borderBarcode">Lav streger omkring stregkoder</label></td>
+                        <td><input type="checkbox" checked class="checkbox" id="borderBarcode"></td>
+                    </tr>
+               </table>
+
+                    <br><br>
+                <button id="submitStyle">Opdater</button> <button id="resetSettings">Nulstil</button> 
+            </div>
+        </div>
+        <div class="dialogContainer"></div>
+        <div id="txtButtonDialog">
+            <h2>Tilføj tekst til tal x</h2>
+            <div id="closeDialog"><i class="fas fa-times"></i></div>
+            <div id="txtButtonDialogSettings">
+                <label for="dialogSearch">Søg efter nummer</label><input id="dialogSearch"><br>
+                <label for="textMarked">Tekst til alle markerede</label><input id="textMarked"><br>
+                <button id="dialogMarkAll" class="buttonSmall">Marker alle på listen</button>
+                <button id="addTextToMarked" class="buttonSmall">Tilføj tekst til markerede</button>
+            </div>
+            <table class="visibleBorder">
+                <tbody id="txtButtonTbody">
+                    <tr>
+                        <th class="markAll"></th>
+                        <th class="number">Nummer</th>
+                        <th class="text">Tekst</th>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+      
+        <div id="dummy">
+            <svg id="barcode"></svg>
+        </div>
+
+        <br><br>
+        <div id="result" style="display:none;">
+            <svg id="barcode"></svg>
+        </div>
+        <div id="png-container">
+            <div class='page-border'>
+                <div class='page'>
+                    <table class="page-table">
+                        <tr class="page-tr"></tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <canvas id="canvas" style="display:none;"></canvas>
+
+        <a rel="license" target="_blank" href="http://creativecommons.org/licenses/by-nc/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc/4.0/80x15.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution-NonCommercial 4.0 International License <i class="far fa-copyright"></i> Toke Raabjerg</a>.
+        <script type="text/javascript" src="app.js"></script>
+        <script type="text/javascript" src="dependencies/slider.js"></script>
+    </body>
+</html>
